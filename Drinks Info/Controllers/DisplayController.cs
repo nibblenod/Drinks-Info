@@ -1,6 +1,4 @@
-
 using Spectre.Console;
-
 namespace Drinks_Info;
 
 public class DisplayController
@@ -9,29 +7,14 @@ public class DisplayController
     {
         AnsiConsole.Markup(message);
     }
-
-    internal void DisplayTable(IEnumerable<string> Items)
+    internal string selectFrom(IEnumerable<string> Items, string title)
     {
-        Table table = new Table();
-        table.ShowRowSeparators();
-        table.AddColumn("Drink Categories");
-
-        foreach (string item in Items)
-        {
-            table.AddRow(item);
-        }
-        
-        AnsiConsole.Write(table);
-    }
-
-    internal string selectFrom(IEnumerable<string> Items)
-    {
-        string category = AnsiConsole.Prompt(
+        string selection = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("Select a category of drinks...")
+                .Title(title)
                 .AddChoices(Items));
 
-        return category;
+        return selection;
     }
    
 }
