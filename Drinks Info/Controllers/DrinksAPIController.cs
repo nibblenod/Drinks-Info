@@ -27,8 +27,19 @@ public class DrinksAPIController : IDisposable
         var drinksResponse = await JsonSerializer.DeserializeAsync<Response<Drink>>(stream);
 
         return drinksResponse.responses == null ? new List<string>() : drinksResponse.responses.Select(arg => arg.name);
-
     }
+
+    internal async Task<IEnumerable<DrinkInfo>> GetDrinksInfo(string drinkName)
+    {
+        await using Stream stream = await _client.GetStreamAsync($"https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita");
+        var drinksResponse = await JsonSerializer.DeserializeAsync<Response<DrinkInfo>>(stream);
+          
+
+        return drinksResponse.responses == null ? new List<DrinkInfo>() : drinksResponse.responses;
+    }
+    
+    
+    
     
     public void Dispose()
     {
