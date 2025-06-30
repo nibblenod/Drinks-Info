@@ -2,7 +2,6 @@ using System.Text.Json;
 using Drinks_Info.Models;
 namespace Drinks_Info;
 
-
 public class DrinksAPIController : IDisposable
 {
     private static readonly HttpClient _client;
@@ -31,15 +30,12 @@ public class DrinksAPIController : IDisposable
 
     internal async Task<IEnumerable<DrinkInfo>> GetDrinksInfo(string drinkName)
     {
-        await using Stream stream = await _client.GetStreamAsync($"https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita");
+        await using Stream stream = await _client.GetStreamAsync($"https://www.thecocktaildb.com/api/json/v1/1/search.php?s={drinkName}");
         var drinksResponse = await JsonSerializer.DeserializeAsync<Response<DrinkInfo>>(stream);
           
 
         return drinksResponse.responses == null ? new List<DrinkInfo>() : drinksResponse.responses;
     }
-    
-    
-    
     
     public void Dispose()
     {

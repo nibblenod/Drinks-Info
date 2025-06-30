@@ -27,9 +27,6 @@ public class DisplayController
         table.AddColumn($"[steelblue1]{drinkInfo.StrDrink}[/]");
         table.AddColumn($"[palegreen3]Details[/]");
         
-        
-        
-
         table.AddRow("ID", drinkInfo.IdDrink);
         table.AddRow("Alcoholic" , drinkInfo.StrAlcoholic);
         table.AddRow("Category" , drinkInfo.StrCategory);
@@ -48,7 +45,6 @@ public class DisplayController
             }
             
         }
-        
         table.AddRow("Ingredients", sb.ToString());
 
         AnsiConsole.Write(table);

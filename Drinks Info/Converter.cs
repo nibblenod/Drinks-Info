@@ -36,9 +36,6 @@ public class IngredientConverter : JsonConverter<DrinkInfo>
                     Measure = measure,
                 });
             }
-            
-          
-           
         }
 
         return drinkInfo;

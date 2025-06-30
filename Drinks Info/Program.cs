@@ -5,26 +5,48 @@ using Drinks_Info.Models;
 DisplayController displayController = new DisplayController();
 using DrinksAPIController drinksApiController = new();
 
-
 displayController.PrintMessage("Welcome! Press any key to continue to the Drinks Menu...");
 Console.ReadLine();
 Console.WriteLine();
 
-
-IEnumerable<string> categories = await drinksApiController.GetCategories();
-string category = displayController.selectFrom(categories, "Select a category of drinks...").Replace(" ", "_");
-
-IEnumerable<string> drinks = await drinksApiController.GetDrinksFromCategory(category);
-string drink = displayController.selectFrom(drinks, "Select a drink...").Replace(" ", "_");
-
-IEnumerable<DrinkInfo> drinkInfos = await drinksApiController.GetDrinksInfo(drink);
-
-
-foreach (var drinkInfo in drinkInfos)
+while (true)
 {
-    displayController.DisplayDrink(drinkInfo);
+    Console.Clear();
+    IEnumerable<string> categories = await drinksApiController.GetCategories();
+    var categoryList = categories.ToList();
+    categoryList.Insert(0, "<Exit>");
     
+    string category = displayController.selectFrom(categoryList, "Select a category of drinks...").Replace(" ", "_");
+
+    if (category == "<Exit>")
+    {
+        break;
+    }
+
+    while (true)
+    {
+        Console.Clear();
+        IEnumerable<string> drinks = await drinksApiController.GetDrinksFromCategory(category);
+        var drinksList = drinks.ToList();
+        drinksList.Insert(0, "<Back>");
+        string drink = displayController.selectFrom(drinksList, "Select a drink...").Replace(" ", "_");
+
+        if (drink == "<Back>")
+        {
+            break;
+        }
+        IEnumerable<DrinkInfo> drinkInfos = await drinksApiController.GetDrinksInfo(drink);
+
+        foreach (var drinkInfo in drinkInfos)
+        {
+            displayController.DisplayDrink(drinkInfo);
+        }
+
+        Console.WriteLine("Enter any key to go back...");
+        Console.ReadKey();
+
+    }
 }
-Console.WriteLine();
+
 
 
