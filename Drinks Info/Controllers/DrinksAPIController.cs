@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Web;
 using Drinks_Info.Models;
 namespace Drinks_Info;
 
@@ -22,7 +23,7 @@ public class DrinksAPIController : IDisposable
     internal async Task<IEnumerable<string>> GetDrinksFromCategory(string category)
     {
         await using Stream stream =
-            await _client.GetStreamAsync($"api/json/v1/1/filter.php?c={category}");
+            await _client.GetStreamAsync($"api/json/v1/1/filter.php?c={HttpUtility.UrlDecode(category)}");
         var drinksResponse = await JsonSerializer.DeserializeAsync<Response<Drink>>(stream);
 
         return drinksResponse.responses == null ? new List<string>() : drinksResponse.responses.Select(arg => arg.name);
@@ -30,7 +31,7 @@ public class DrinksAPIController : IDisposable
 
     internal async Task<IEnumerable<DrinkInfo>> GetDrinksInfo(string drinkName)
     {
-        await using Stream stream = await _client.GetStreamAsync($"https://www.thecocktaildb.com/api/json/v1/1/search.php?s={drinkName}");
+        await using Stream stream = await _client.GetStreamAsync($"api/json/v1/1/search.php?s={HttpUtility.UrlDecode(drinkName)}");
         var drinksResponse = await JsonSerializer.DeserializeAsync<Response<DrinkInfo>>(stream);
           
 

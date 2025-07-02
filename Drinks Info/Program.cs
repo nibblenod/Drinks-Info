@@ -16,7 +16,7 @@ while (true)
     var categoryList = categories.ToList();
     categoryList.Insert(0, "<Exit>");
     
-    string category = displayController.selectFrom(categoryList, "Select a category of drinks...").Replace(" ", "_");
+    string category = displayController.selectFrom(categoryList, "Select a category of drinks...");
 
     if (category == "<Exit>")
     {
@@ -29,7 +29,7 @@ while (true)
         IEnumerable<string> drinks = await drinksApiController.GetDrinksFromCategory(category);
         var drinksList = drinks.ToList();
         drinksList.Insert(0, "<Back>");
-        string drink = displayController.selectFrom(drinksList, "Select a drink...").Replace(" ", "_");
+        string drink = displayController.selectFrom(drinksList, "Select a drink...");
 
         if (drink == "<Back>")
         {
